@@ -5,10 +5,21 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { SmtpMessage } from "../smtp-message";
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 
 export default async function Signup(props: {
   searchParams: Promise<Message>;
 }) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    return redirect("/");
+  }
   const searchParams = await props.searchParams;
   if ("message" in searchParams) {
     return (
