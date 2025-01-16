@@ -5,12 +5,6 @@ interface SongArtistPair {
   artist: string;
 }
 
-interface Playlist {
-  id: string;
-  name: string;
-  tracks: string[];
-}
-
 export const generatePlaylist = async (
   prompt: string,
   token: string

@@ -36,7 +36,6 @@ const PlaylistGenerator: React.FC = () => {
 
       const generatedSongArtistPairs = await generatePlaylist(prompt, token);
 
-      // Transform SongArtistPair[] to a single Playlist
       const generatedPlaylist: Playlist = {
         id: `playlist-${Date.now()}`, // Generate a unique ID
         name: `Playlist based on "${prompt}"`, // Or a more descriptive name
