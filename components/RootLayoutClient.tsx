@@ -4,9 +4,8 @@
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { ThemeProvider } from "next-themes";
 import Link from "next/link";
-import { signOut } from "@/utils/auth";
+import { signOutAction } from "@/app/actions";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 
 interface Props {
@@ -14,7 +13,6 @@ interface Props {
 }
 
 const RootLayoutClient: React.FC<Props> = ({ children }) => {
-  const router = useRouter();
   const supabase = createClient();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -26,14 +24,10 @@ const RootLayoutClient: React.FC<Props> = ({ children }) => {
 
     checkAuth();
 
-    supabase.auth.onAuthStateChange((event, session) => {
-      setIsLoggedIn(!!session);
+    supabase.auth.onAuthStateChange((_, session) => {
+      setIsLoggedIn(!!session); // triggers re-render
     });
   }, [supabase]);
-
-  const handleSignOut = () => {
-    signOut(router);
-  };
 
   return (
     <ThemeProvider
@@ -52,11 +46,10 @@ const RootLayoutClient: React.FC<Props> = ({ children }) => {
               </div>
               <div className="flex gap-5 items-center font-semibold">
                 {isLoggedIn ? (
-                  <button onClick={handleSignOut}>Log Out</button>
+                  <button onClick={signOutAction}>Sign Out</button>
                 ) : (
                   <>
-                    <Link href="/sign-in">Log In</Link>
-                    <Link href="/sign-up">Register</Link>
+                    <Link href="/sign-in">Sign In</Link>
                   </>
                 )}
               </div>

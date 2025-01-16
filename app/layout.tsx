@@ -1,4 +1,3 @@
-// app/layout.tsx
 import { Geist } from "next/font/google";
 import "./globals.css";
 import RootLayoutClient from "../components/RootLayoutClient"; // Import the client component

@@ -8,8 +8,6 @@ interface SongArtistPair {
 }
 
 export async function POST(req: NextRequest) {
-  console.log("Hello from generate-playlist/route.ts");
-
   const supabase = await createClient();
 
   const token = req.headers.get("authorization")?.split(" ")[1];
