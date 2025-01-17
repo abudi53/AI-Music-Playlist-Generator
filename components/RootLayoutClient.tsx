@@ -7,6 +7,7 @@ import Link from "next/link";
 import { signOutAction } from "@/app/actions";
 import React, { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
+import { Toaster } from "@/components/ui/toaster";
 
 interface Props {
   children: React.ReactNode;
@@ -73,6 +74,7 @@ const RootLayoutClient: React.FC<Props> = ({ children }) => {
           </footer>
         </div>
       </main>
+      <Toaster />
     </ThemeProvider>
   );
 };

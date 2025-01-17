@@ -3,6 +3,17 @@
 import React, { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { generatePlaylist, savePlaylist } from "@/utils/gemini";
+import { useToast } from "@/hooks/use-toast";
+import { Separator } from "@/components/ui/separator";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 interface Playlist {
   id: string;
@@ -17,8 +28,6 @@ const PlaylistGenerator: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const supabase = createClient();
-
-  const user = supabase.auth.getUser();
 
   const handleGenerate = async () => {
     if (!prompt.trim()) {
@@ -52,12 +61,20 @@ const PlaylistGenerator: React.FC = () => {
     }
   };
 
+  const { toast } = useToast();
+  const [isSaving, setIsSaving] = useState(false);
+
   const handleSave = async () => {
     if (!playlist) {
-      alert("No playlist to save.");
+      toast({
+        title: "No playlist to save.",
+        description: "Please generate a playlist first.",
+        variant: "destructive",
+      });
       return;
     }
     try {
+      setIsSaving(true);
       const { data, error } = await supabase.auth.getSession();
       if (error || !data.session) throw new Error("User not authenticated.");
       const token = data.session.access_token;
@@ -66,9 +83,19 @@ const PlaylistGenerator: React.FC = () => {
         { name: playlist.name, tracks: playlist.tracks },
         token
       );
-      alert("Playlist saved successfully!");
+      toast({
+        title: "Playlist saved successfully!",
+        description: "You can check your saved playlists here.",
+      });
     } catch (err: any) {
-      alert(err.message || "Failed to save playlist.");
+      toast({
+        title: "Failed to save playlist.",
+        description:
+          err.message || "An error occurred while saving the playlist.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -93,20 +120,41 @@ const PlaylistGenerator: React.FC = () => {
       {error && <p className="text-red-500 mt-2">{error}</p>}
       {playlist && (
         <div className="mt-4">
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center mb-3">
             <span>{playlist.name}</span>
             <button
               onClick={handleSave}
               className="bg-green-500 text-white px-3 py-1 rounded"
+              disabled={isSaving}
             >
-              Save
+              {isSaving ? "Saving..." : "Save"}
             </button>
           </div>
-          <ul className="ml-4 mt-1">
+          <Table className="w-full mt-4">
+            <TableCaption>Generated Playlist</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Song</TableHead>
+                <TableHead className="text-center">Artist</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {playlist.tracks.map((track, index) => {
+                const [song, artist] = track.split(" by ");
+                return (
+                  <TableRow key={index}>
+                    <TableCell>{song}</TableCell>
+                    <TableCell className="text-center">{artist}</TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+          {/* <ul className="ml-4 mt-1">
             {playlist.tracks.map((track, index) => (
               <li key={index}>{track}</li>
             ))}
-          </ul>
+          </ul> */}
         </div>
       )}
     </div>
