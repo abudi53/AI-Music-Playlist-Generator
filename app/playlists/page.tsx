@@ -1,6 +1,5 @@
 import React from "react";
 import PlaylistGenerator from "@/components/PlaylistGenerator";
-// import withAuth from "@/components/ProtectedRoute";
 
 const Playlists: React.FC = () => {
   return (
