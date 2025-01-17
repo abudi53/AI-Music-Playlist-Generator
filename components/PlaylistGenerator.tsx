@@ -47,7 +47,7 @@ const PlaylistGenerator: React.FC = () => {
 
       const generatedPlaylist: Playlist = {
         id: `playlist-${Date.now()}`, // Generate a unique ID
-        name: `Playlist based on "${prompt}"`, // Or a more descriptive name
+        name: prompt,
         tracks: generatedSongArtistPairs.map(
           (item) => `${item.song} by ${item.artist}`
         ), // Combine all songs and artists
@@ -150,11 +150,6 @@ const PlaylistGenerator: React.FC = () => {
               })}
             </TableBody>
           </Table>
-          {/* <ul className="ml-4 mt-1">
-            {playlist.tracks.map((track, index) => (
-              <li key={index}>{track}</li>
-            ))}
-          </ul> */}
         </div>
       )}
     </div>
