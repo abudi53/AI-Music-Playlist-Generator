@@ -26,7 +26,7 @@ const RootLayoutClient: React.FC<Props> = ({ children }) => {
     checkAuth();
 
     supabase.auth.onAuthStateChange((_, session) => {
-      setIsLoggedIn(!!session); // triggers re-render
+      setIsLoggedIn(!!session);
     });
   }, [supabase]);
 
@@ -42,7 +42,7 @@ const RootLayoutClient: React.FC<Props> = ({ children }) => {
           <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
             <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
               <div className="flex gap-5 items-center font-semibold">
-                <Link href={"/"}>AI Music Playlist Generator</Link>
+                <Link href={"/"}>AI Music Playlist Generator 🎵</Link>
                 <div className="flex items-center gap-2"></div>
               </div>
               <div className="flex gap-5 items-center font-semibold">

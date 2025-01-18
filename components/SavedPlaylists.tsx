@@ -21,6 +21,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/client";
 
@@ -38,6 +39,8 @@ const SavedPlaylists: React.FC<Props> = ({ playlists: initialPlaylists }) => {
   const supabase = createClient();
   const [playlists, setPlaylists] = useState<Playlist[]>(initialPlaylists);
 
+  const { toast } = useToast();
+
   const handleDelete = async (playlistId: string) => {
     try {
       const { error } = await supabase
@@ -46,19 +49,28 @@ const SavedPlaylists: React.FC<Props> = ({ playlists: initialPlaylists }) => {
         .eq("id", playlistId);
 
       if (error) {
-        console.error("Error deleting playlist from Supabase:", error);
-        alert("Failed to delete playlist.");
+        toast({
+          title: "Failed to delete playlist.",
+          description: "Please try again later.",
+          variant: "destructive",
+        });
         return;
       }
 
-      console.log("Playlist deleted successfully:", playlistId);
-      alert("Playlist deleted successfully!");
+      toast({
+        title: "Playlist deleted successfully.",
+        description: "Your playlist has been deleted.",
+      });
       setPlaylists((prevPlaylists) =>
         prevPlaylists.filter((playlist) => playlist.id !== playlistId)
       );
     } catch (error: any) {
       console.error("Error deleting playlist:", error);
-      alert("Failed to delete playlist.");
+      toast({
+        title: "Failed to delete playlist.",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
     }
   };
 

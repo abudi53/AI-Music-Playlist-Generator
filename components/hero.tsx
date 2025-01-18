@@ -15,7 +15,13 @@ export default function Header() {
         >
           Generate Playlist
         </a>
-        <a className="font-bold hover:underline">Check your saved playlists</a>
+        <a
+          className="font-bold hover:underline"
+          rel="noopener noreferrer"
+          href="/saved-playlists"
+        >
+          Check your saved playlists
+        </a>
       </div>
       <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent my-8" />
     </div>
