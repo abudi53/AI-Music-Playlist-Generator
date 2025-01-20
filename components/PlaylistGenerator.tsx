@@ -110,7 +110,7 @@ const PlaylistGenerator: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="w-full max-w-md mx-auto p-4">
       <div className="mb-4">
         <input
           type="text"
