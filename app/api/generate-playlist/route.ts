@@ -8,23 +8,23 @@ interface SongArtistPair {
 }
 
 export async function POST(req: NextRequest) {
-  const supabase = await createClient();
+  // const supabase = await createClient();
 
-  const token = req.headers.get("authorization")?.split(" ")[1];
+  // const token = req.headers.get("authorization")?.split(" ")[1];
 
-  if (!token) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  // if (!token) {
+  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  // }
 
-  // Verify JWT token with Supabase
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser(token);
+  // // Verify JWT token with Supabase
+  // const {
+  //   data: { user },
+  //   error: authError,
+  // } = await supabase.auth.getUser(token);
 
-  if (authError || !user) {
-    return NextResponse.json({ error: "Invalid token" }, { status: 401 });
-  }
+  // if (authError || !user) {
+  //   return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+  // }
 
   try {
     const reqBody = await req.json();

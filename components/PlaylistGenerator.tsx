@@ -42,9 +42,9 @@ const PlaylistGenerator: React.FC = () => {
 
     try {
       const { data, error } = await supabase.auth.getSession();
-      if (error || !data.session) throw new Error("User not authenticated.");
-      const token = data.session.access_token;
-
+      // if (error || !data.session) throw new Error("User not authenticated.");
+      // const token = data.session.access_token ; // Use an empty string as a fallback
+      const token = data?.session?.access_token || ""; //
       const generatedSongArtistPairs = await generatePlaylist(prompt, token);
 
       const generatedPlaylist: Playlist = {

@@ -9,7 +9,6 @@ export const generatePlaylist = async (
   prompt: string,
   token: string
 ): Promise<SongArtistPair[]> => {
-  // Changed return type to SongArtistPair[]
   const response = await axios.post(
     "/api/generate-playlist",
     { prompt },
