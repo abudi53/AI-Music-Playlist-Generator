@@ -21,6 +21,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import Link from "next/link";
+
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/client";
@@ -79,12 +81,15 @@ const SavedPlaylists: React.FC<Props> = ({ playlists: initialPlaylists }) => {
   }
 
   return (
-    <div>
+    <div className={"flex flex-col items-center"}>
       <h2 className="text-center text-3xl mb-8">Saved Playlists</h2>
+      <Link href="/playlists">
+        <Button className="text-center">Or generate a new playlist...</Button>
+      </Link>
       <ul className="mt-4 flex flex-wrap gap-4 place-content-center">
         {playlists.map((playlist) => (
           <li key={playlist.id} className="mb-2">
-            <Card className="max-w-96 h-96 overflow-auto">
+            <Card className="w-96 h-96 overflow-auto">
               <CardHeader className="sticky top-0 bg-inherit z-10">
                 <CardTitle>{playlist.name}</CardTitle>
               </CardHeader>

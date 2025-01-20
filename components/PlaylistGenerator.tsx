@@ -14,7 +14,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
+import { ToastAction } from "@/components/ui/toast";
+import { useRouter } from "next/navigation";
 interface Playlist {
   id: string;
   name: string;
@@ -26,6 +27,7 @@ const PlaylistGenerator: React.FC = () => {
   const [playlist, setPlaylist] = useState<Playlist | null>(null); // Changed to single playlist
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter(); // Initialize useRouter
 
   const supabase = createClient();
 
@@ -86,6 +88,14 @@ const PlaylistGenerator: React.FC = () => {
       toast({
         title: "Playlist saved successfully!",
         description: "You can check your saved playlists here.",
+        action: (
+          <ToastAction
+            altText="View"
+            onClick={() => router.push("/saved-playlists")} // Use router.push for navigation
+          >
+            View
+          </ToastAction>
+        ),
       });
     } catch (err: any) {
       toast({

@@ -8,6 +8,7 @@ import { signOutAction } from "@/app/actions";
 import React, { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { Toaster } from "@/components/ui/toaster";
+import BongoCat from "@/components/bongoCat/dist/BongoCat";
 
 interface Props {
   children: React.ReactNode;
@@ -70,8 +71,10 @@ const RootLayoutClient: React.FC<Props> = ({ children }) => {
                 Supabase
               </a>
             </p>
+
             <ThemeSwitcher />
           </footer>
+          <BongoCat />
         </div>
       </main>
       <Toaster />

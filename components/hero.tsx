@@ -7,6 +7,7 @@ export default function Header() {
           <span className="font-bold">Music</span>🎵
         </p>
       </div>
+      <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent my-8" />
       <div className="flex gap-8 justify-center items-center">
         <a
           className="font-bold hover:underline"
@@ -23,7 +24,6 @@ export default function Header() {
           Check your saved playlists
         </a>
       </div>
-      <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent my-8" />
     </div>
   );
 }
