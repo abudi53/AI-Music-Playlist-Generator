@@ -2,12 +2,6 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import SavedPlaylists from "@/components/SavedPlaylists";
 
-interface Playlist {
-  id: string;
-  name: string;
-  tracks: string[];
-}
-
 export default async function savedPlaylists() {
   const supabase = await createClient();
 

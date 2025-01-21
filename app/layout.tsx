@@ -29,7 +29,6 @@ export default async function RootLayout({
     data: { user },
     error,
   } = await supabase.auth.getUser();
-  console.log(user);
 
   return (
     <html lang="en" className={geistSans.className} suppressHydrationWarning>

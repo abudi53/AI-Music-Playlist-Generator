@@ -177,6 +177,7 @@ const PlaylistGenerator: React.FC = () => {
             </TableHeader>
             <TableBody>
               {playlist.tracks.map((track, index) => {
+                console.log("track", track);
                 return (
                   <TableRow key={index}>
                     <TableCell>{track.song}</TableCell>

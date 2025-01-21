@@ -26,11 +26,26 @@ import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/client";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import SpotifyIcon from "@/components/icons/spotify.svg";
+import YoutubeIcon from "@/components/icons/youtube.svg";
 
 interface Playlist {
   id: string;
   name: string;
-  tracks: string[];
+  tracks: {
+    song: string;
+    artist: string;
+    links: {
+      youtube?: string;
+      spotify?: string;
+    };
+  }[];
 }
 
 interface Props {
@@ -42,6 +57,7 @@ const SavedPlaylists: React.FC<Props> = ({ playlists: initialPlaylists }) => {
   const [playlists, setPlaylists] = useState<Playlist[]>(initialPlaylists);
 
   const { toast } = useToast();
+  console.log("playlists", playlists);
 
   const handleDelete = async (playlistId: string) => {
     try {
@@ -88,36 +104,84 @@ const SavedPlaylists: React.FC<Props> = ({ playlists: initialPlaylists }) => {
       </Link>
       <ul className="mt-4 flex flex-wrap gap-4 place-content-center">
         {playlists.map((playlist) => (
-          <li key={playlist.id} className="mb-2">
-            <Card className="w-96 h-96 overflow-auto">
-              <CardHeader className="sticky top-0 bg-inherit z-10">
+          <li key={playlist.id} className="mb-2 w-3/6">
+            <Card className="h-96 overflow-auto flex items-center flex-col">
+              <CardHeader className="sticky top-0 bg-inherit z-10 w-full text-center">
                 <CardTitle>{playlist.name}</CardTitle>
               </CardHeader>
               <CardContent className="h-64 w-11/12">
                 <Table className="w-full mt-4">
+                  <TableCaption>Generated Playlist</TableCaption>
                   <TableHeader>
                     <TableRow>
                       <TableHead>Song</TableHead>
                       <TableHead className="text-center">Artist</TableHead>
+                      <TooltipProvider>
+                        <TableHead className="text-center">
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <TooltipContent>
+                                Sometimes links may not work.
+                              </TooltipContent>
+                              Links
+                            </TooltipTrigger>
+                          </Tooltip>
+                        </TableHead>
+                      </TooltipProvider>
+                      {/* <TableHead className="text-center">Links</TableHead> */}
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {playlist.tracks.map((track, index) => {
-                      const [song, artist] = track.split(" by ");
-                      return (
-                        <TableRow key={index}>
-                          <TableCell>{song}</TableCell>
-                          <TableCell className="text-center">
-                            {artist}
-                          </TableCell>
-                        </TableRow>
-                      );
+                      try {
+                        const parsedTrack =
+                          typeof track === "string" ? JSON.parse(track) : track;
+                        return (
+                          <TableRow key={index}>
+                            <TableCell>{parsedTrack?.song}</TableCell>
+                            <TableCell className="text-center">
+                              {parsedTrack?.artist}
+                            </TableCell>
+                            <TableCell className="text-center flex items-center gap-3 h-full">
+                              {parsedTrack?.links?.youtube && (
+                                <a
+                                  href={parsedTrack.links.youtube}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <YoutubeIcon
+                                    width="32"
+                                    height="32"
+                                    fill="#FF0000"
+                                  />
+                                </a>
+                              )}
+                              {parsedTrack?.links?.spotify && (
+                                <a
+                                  href={parsedTrack.links.spotify}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <SpotifyIcon
+                                    width="32"
+                                    height="32"
+                                    fill="#1DB954"
+                                  />
+                                </a>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      } catch (error: any) {
+                        console.error("Error parsing track:", error);
+                        return null;
+                      }
                     })}
                   </TableBody>
                 </Table>
                 <Button
                   onClick={() => handleDelete(playlist.id)}
-                  className="bg-red-500 text-white px-3 py-1 rounded ml-auto mt-4 mb-4"
+                  className="bg-red-500 text-white px-3 py-1 rounded mt-4 mb-4"
                 >
                   Delete
                 </Button>
