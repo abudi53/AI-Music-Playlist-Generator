@@ -11,8 +11,6 @@ interface Props {
 }
 
 const RootLayoutClient: React.FC<Props> = ({ children }) => {
-  // const { isLoading } = useAuth();
-
   return (
     <ThemeProvider
       attribute="class"

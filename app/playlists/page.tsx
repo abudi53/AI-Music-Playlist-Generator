@@ -3,7 +3,7 @@ import PlaylistGenerator from "@/components/PlaylistGenerator";
 
 const Playlists: React.FC = () => {
   return (
-    <div className="container mx-auto p-4 h-full">
+    <div className="p-4 h-full mx-auto">
       <h1 className="text-3xl text-center font-bold mb-2">
         Generate Your Music Playlist
       </h1>

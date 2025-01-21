@@ -2,7 +2,6 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import RootLayoutClient from "../components/RootLayoutClient";
 import Navbar from "@/components/Navbar";
-import { AuthProvider } from "./context/AuthContext";
 import { createClient } from "@/utils/supabase/server";
 
 const defaultUrl = process.env.VERCEL_URL
@@ -35,10 +34,8 @@ export default async function RootLayout({
   return (
     <html lang="en" className={geistSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground">
-        <AuthProvider>
-          <Navbar user={user} />
-          <RootLayoutClient>{children}</RootLayoutClient>
-        </AuthProvider>
+        <Navbar user={user} />
+        <RootLayoutClient>{children}</RootLayoutClient>
       </body>
     </html>
   );

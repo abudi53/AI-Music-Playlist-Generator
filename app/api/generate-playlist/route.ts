@@ -5,6 +5,10 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 interface SongArtistPair {
   song: string;
   artist: string;
+  links: {
+    youtube?: string;
+    spotify?: string;
+  };
 }
 
 export async function POST(req: NextRequest) {
@@ -40,8 +44,7 @@ export async function POST(req: NextRequest) {
     const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
 
-    const geminiPrompt: string = `Generate a JSON array of songs based on the following: ${prompt}. Each object in the array should have a "song" key containing the song title and an "artist" key containing the artist's name. Return ONLY the JSON.`;
-
+    const geminiPrompt: string = `Generate a JSON array of songs based on the following: ${prompt}. Each object in the array should have a "song" key containing the song title, an "artist" key containing the artist's name, and a "links" key containing an object with "youtube" and "spotify" keys, each with a corresponding link. Return ONLY the JSON.`;
     const geminiResponse = await model.generateContent(geminiPrompt);
     let text = geminiResponse.response.text();
 

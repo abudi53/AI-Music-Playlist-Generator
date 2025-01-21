@@ -3,6 +3,10 @@ import axios from "axios";
 interface SongArtistPair {
   song: string;
   artist: string;
+  links: {
+    youtube?: string;
+    spotify?: string;
+  };
 }
 
 export const generatePlaylist = async (
@@ -28,7 +32,7 @@ export const generatePlaylist = async (
 };
 
 export const savePlaylist = async (
-  playlist: { name: string; tracks: string[] },
+  playlist: { name: string; tracks: SongArtistPair[] },
   token: string
 ): Promise<void> => {
   const response = await axios.post("/api/save-playlist", playlist, {

@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { generatePlaylist, savePlaylist } from "@/utils/gemini";
 import { useToast } from "@/hooks/use-toast";
-import { Separator } from "@/components/ui/separator";
 import {
   Table,
   TableBody,
@@ -14,12 +13,27 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { ToastAction } from "@/components/ui/toast";
 import { useRouter } from "next/navigation";
+import SpotifyIcon from "@/components/icons/spotify.svg";
+import YoutubeIcon from "@/components/icons/youtube.svg";
 interface Playlist {
   id: string;
   name: string;
-  tracks: string[];
+  tracks: {
+    song: string;
+    artist: string;
+    links: {
+      youtube?: string;
+      spotify?: string;
+    };
+  }[];
 }
 
 const PlaylistGenerator: React.FC = () => {
@@ -42,17 +56,17 @@ const PlaylistGenerator: React.FC = () => {
 
     try {
       const { data, error } = await supabase.auth.getSession();
-      // if (error || !data.session) throw new Error("User not authenticated.");
-      // const token = data.session.access_token ; // Use an empty string as a fallback
       const token = data?.session?.access_token || ""; //
       const generatedSongArtistPairs = await generatePlaylist(prompt, token);
 
       const generatedPlaylist: Playlist = {
-        id: `playlist-${Date.now()}`, // Generate a unique ID
+        id: `playlist-${Date.now()}`,
         name: prompt,
-        tracks: generatedSongArtistPairs.map(
-          (item) => `${item.song} by ${item.artist}`
-        ), // Combine all songs and artists
+        tracks: generatedSongArtistPairs.map((item) => ({
+          song: item.song,
+          artist: item.artist,
+          links: item.links,
+        })),
       };
 
       setPlaylist(generatedPlaylist); // Set the single playlist
@@ -146,15 +160,49 @@ const PlaylistGenerator: React.FC = () => {
               <TableRow>
                 <TableHead>Song</TableHead>
                 <TableHead className="text-center">Artist</TableHead>
+                <TooltipProvider>
+                  <TableHead className="text-center">
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <TooltipContent>
+                          Sometimes links may not work.
+                        </TooltipContent>
+                        Links
+                      </TooltipTrigger>
+                    </Tooltip>
+                  </TableHead>
+                </TooltipProvider>
+                {/* <TableHead className="text-center">Links</TableHead> */}
               </TableRow>
             </TableHeader>
             <TableBody>
               {playlist.tracks.map((track, index) => {
-                const [song, artist] = track.split(" by ");
                 return (
                   <TableRow key={index}>
-                    <TableCell>{song}</TableCell>
-                    <TableCell className="text-center">{artist}</TableCell>
+                    <TableCell>{track.song}</TableCell>
+                    <TableCell className="text-center">
+                      {track.artist}
+                    </TableCell>
+                    <TableCell className="text-center flex items-center gap-3 h-full">
+                      {track.links?.youtube && (
+                        <a
+                          href={track.links.youtube}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <YoutubeIcon width="32" height="32" fill="#FF0000" />
+                        </a>
+                      )}
+                      {track.links?.spotify && (
+                        <a
+                          href={track.links.spotify}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <SpotifyIcon width="32" height="32" fill="#1DB954" />
+                        </a>
+                      )}
+                    </TableCell>
                   </TableRow>
                 );
               })}
