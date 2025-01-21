@@ -9,6 +9,7 @@ interface NavbarProps {
 }
 
 const Navbar = ({ user }: NavbarProps) => {
+  const displayName = user.email.replace(/@.*/, "");
   return (
     <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
       <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
@@ -18,8 +19,8 @@ const Navbar = ({ user }: NavbarProps) => {
         </div>
         <div className="flex gap-5 items-center font-semibold">
           {user ? (
-            <div className="flex gap-5 items-center font-semibold">
-              <span>Welcome, </span>
+            <div className="flex gap-8 items-center font-semibold">
+              <span>Welcome, {displayName} </span>
               <button onClick={signOutAction}>Sign Out</button>
             </div>
           ) : (
