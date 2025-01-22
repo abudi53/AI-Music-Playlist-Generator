@@ -9,7 +9,10 @@ interface NavbarProps {
 }
 
 const Navbar = ({ user }: NavbarProps) => {
-  const displayName = user.email.replace(/@.*/, "");
+  let displayName = "";
+  if (user) {
+    displayName = user.email.replace(/@.*/, "");
+  }
   return (
     <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
       <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
