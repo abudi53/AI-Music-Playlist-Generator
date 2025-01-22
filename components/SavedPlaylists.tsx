@@ -111,7 +111,6 @@ const SavedPlaylists: React.FC<Props> = ({ playlists: initialPlaylists }) => {
               </CardHeader>
               <CardContent className="h-64 w-11/12">
                 <Table className="w-full mt-4">
-                  <TableCaption>Generated Playlist</TableCaption>
                   <TableHeader>
                     <TableRow>
                       <TableHead>Song</TableHead>
