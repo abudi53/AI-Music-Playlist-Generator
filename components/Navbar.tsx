@@ -24,6 +24,7 @@ const Navbar = ({ user }: NavbarProps) => {
           {user ? (
             <div className="flex gap-8 items-center font-semibold">
               <span>Welcome, {displayName} </span>
+              <Link href={"/saved-playlists"}>Saved Playlists</Link>
               <button onClick={signOutAction}>Sign Out</button>
             </div>
           ) : (
