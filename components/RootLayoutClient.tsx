@@ -1,4 +1,3 @@
-// app/components/RootLayoutClient.tsx
 "use client";
 
 import { ThemeSwitcher } from "@/components/theme-switcher";
